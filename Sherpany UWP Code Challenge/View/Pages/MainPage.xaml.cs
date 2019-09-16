@@ -30,5 +30,21 @@ namespace Sherpany_UWP_Code_Challenge
             this.InitializeComponent();
             Messenger.Default.Register<StartAnimationMessage>(this, m => CloseAppAnimation.Begin());
         }
+
+        private void OnDragableGridManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            DragableGridTransform.X += e.Delta.Translation.X;
+            DragableGridTransform.Y += e.Delta.Translation.Y;
+        }
+
+        private void OnDragableGridManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
+        {
+            Button.IsEnabled = false;
+        }
+
+        private void OnDragableGridManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+            Button.IsEnabled = true;
+        }
     }
 }
