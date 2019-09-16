@@ -23,7 +23,7 @@
             <Button Content="Navigate" VerticalAlignment="Top" Margin="0,70,0,0" HorizontalAlignment="Right"></Button>
         </Grid>
         <Grid x:Name="DragableGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White">
-            <Button Style="{StaticResource ButtonRevealStyle}" Height="200" Width="400" FontSize="80" x:Name="Button" Content="Press me" Tapped="ButtonTapped"></Button>
+            <Button Style="{StaticResource ButtonRevealStyle}" Height="200" Width="400" FontSize="80" x:Name="Button" Content="Press me" Command="{Binding CloseAppCommand}"></Button>
         </Grid>
     </Grid>
 </Page>

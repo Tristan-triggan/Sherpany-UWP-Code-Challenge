@@ -124,6 +124,7 @@
     <Compile Include="Interfaces\IDialogServiceEx.cs" />
     <Compile Include="Interfaces\IDummyApiService.cs" />
     <Compile Include="Interfaces\IKeyManager.cs" />
+    <Compile Include="Messages\StartAnimationMessage.cs" />
     <Compile Include="Model\SherpanyValueModel.cs" />
     <Compile Include="Services\DummyApiService.cs" />
     <Compile Include="Services\KeyManager.cs" />
