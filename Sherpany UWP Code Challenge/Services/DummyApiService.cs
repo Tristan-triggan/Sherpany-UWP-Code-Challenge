@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Sherpany_UWP_Code_Challange.Interfaces;
-using Sherpany_UWP_Code_Challange.Model;
+using Sherpany_UWP_Code_Challenge.Interfaces;
+using Sherpany_UWP_Code_Challenge.Model;
 
-namespace Sherpany_UWP_Code_Challange.Services
+namespace Sherpany_UWP_Code_Challenge.Services
 {
     public class DummyApiService: IDummyApiService
     {

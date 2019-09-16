@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
-using Sherpany_UWP_Code_Challange.Interfaces;
+using Sherpany_UWP_Code_Challenge.Interfaces;
 
-namespace Sherpany_UWP_Code_Challange.ViewModel.Pages
+namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
 {
     public class SherpanyValuesPageViewModel: ViewModelBase
     {

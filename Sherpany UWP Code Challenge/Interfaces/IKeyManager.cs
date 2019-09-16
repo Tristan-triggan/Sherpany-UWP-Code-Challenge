@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sherpany_UWP_Code_Challange.Interfaces
+namespace Sherpany_UWP_Code_Challenge.Interfaces
 {
     public interface IKeyManager
     {

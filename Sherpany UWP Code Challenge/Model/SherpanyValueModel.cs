@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sherpany_UWP_Code_Challange.Model
+namespace Sherpany_UWP_Code_Challenge.Model
 {
     public class SherpanyValueModel
     {

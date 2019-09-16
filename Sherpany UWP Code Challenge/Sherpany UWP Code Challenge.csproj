@@ -7,8 +7,8 @@
     <ProjectGuid>{0F3B0A64-8ED6-4B08-9528-2AF3F065579C}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sherpany_UWP_Code_Challange</RootNamespace>
-    <AssemblyName>Sherpany UWP Code Challange</AssemblyName>
+    <RootNamespace>Sherpany_UWP_Code_Challenge</RootNamespace>
+    <AssemblyName>Sherpany UWP Code Challenge</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17134.0</TargetPlatformVersion>

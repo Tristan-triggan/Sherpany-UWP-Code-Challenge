@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using MetroLog;
-using Sherpany_UWP_Code_Challange.Interfaces;
+using Sherpany_UWP_Code_Challenge.Interfaces;
 
-namespace Sherpany_UWP_Code_Challange.Services
+namespace Sherpany_UWP_Code_Challenge.Services
 {
     public class UwpEncryptionManager : IEncryptionManager
     {
