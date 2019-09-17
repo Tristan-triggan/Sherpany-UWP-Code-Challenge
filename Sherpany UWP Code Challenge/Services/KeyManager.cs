@@ -18,7 +18,7 @@ namespace Sherpany_UWP_Code_Challenge.Services
             _localSettings = ApplicationData.Current.LocalSettings;
         }
 
-        public string GetEncryptionKey(bool isDemoMode)
+        public string GetEncryptionKey(bool isDemoMode = false)
         {
             return IsKeySet() ? _localSettings.Values[_resourceName].ToString() : string.Empty;
         }

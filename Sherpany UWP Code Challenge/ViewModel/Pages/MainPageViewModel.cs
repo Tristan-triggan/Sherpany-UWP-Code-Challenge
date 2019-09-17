@@ -9,14 +9,16 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
+using Sherpany_UWP_Code_Challenge.Interfaces;
 using Sherpany_UWP_Code_Challenge.Messages;
-using Sherpany_UWP_Code_Challenge.Services;
 
 namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
 {
     public class MainPageViewModel: ViewModelBase
     {
         private readonly INavigationService _navigationService;
+        private readonly IKeyManager _keyManager;
+        private readonly IDialogServiceEx _dialogService;
 
         private string _password;
 
@@ -26,15 +28,19 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
             set
             {
                 _password = value;
-                ((RelayCommand<string>)SetPasswordAndNavigateCommand).RaiseCanExecuteChanged();
+                ((RelayCommand<string>)TryLoginCommand).RaiseCanExecuteChanged();
             }
         }
+        public bool IsPasswordSet => _keyManager.IsKeySet();
+        public string PassPhrase => IsPasswordSet ? "Please confirm your pin:" : "Set a six-digit passcode:"; // Could think of a converter to switch the sentence view side
 
 
-        public MainPageViewModel(INavigationService navigationService)
+        public MainPageViewModel(INavigationService navigationService, IKeyManager keyManager, IDialogServiceEx dialogService)
         {
             _navigationService = navigationService;
-            SetPasswordAndNavigateCommand = new RelayCommand<string>(SetPasswordAndNavigate, IsPasswordValid);
+            _keyManager = keyManager;
+            TryLoginCommand = new RelayCommand<string>(TryLogin, IsPasswordValid);
+            _dialogService = dialogService;
         }
 
         public ICommand CloseAppCommand => new RelayCommand(CloseApp);
@@ -46,20 +52,38 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
             Messenger.Default.Send(new CloseAppMessage());
         }
 
+        public ICommand TryLoginCommand { get;  }
 
-        //TODO If no passcode is set in the vault, the user can enter one and will then be navigated to the DetailPageView
-        public ICommand SetPasswordAndNavigateCommand { get;  }
+        private void TryLogin(string _)
+        {
+            if(IsPasswordSet)
+            {
+                if(!VerifyPassword(Password))
+                {
+                    _dialogService.ShowError("Invalid password entered", "The password is incorrect", "ok", null);
+                    return;
+                }
+            }
+            else
+            {
+                StorePassword(Password);
+            }
+            _navigationService.NavigateTo("SherpanyValuesPageView");
+        }
+
+        private void StorePassword(string password)
+        {
+            _keyManager.SetEncryptionKey(EncryptPassword(password));
+        }
+
+        private bool VerifyPassword(string password)
+        {
+            return EncryptPassword(password) == _keyManager.GetEncryptionKey();
+        }
 
         private bool IsPasswordValid(string _)
         {
             return Password?.Length == 6 && Password.All(c => char.IsDigit(c));
-        }
-
-        private void SetPasswordAndNavigate(string _)
-        {
-            var keyManager = new KeyManager();
-            keyManager.SetEncryptionKey(EncryptPassword(Password));
-            _navigationService.NavigateTo("SherpanyValuesPageView");
         }
 
         private string EncryptPassword(string password)
@@ -74,14 +98,6 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
                 }
                 return builder.ToString();
             }
-        }
-
-        //TODO If a passcode has already been stored, use this to validate and navigate
-        public ICommand ValidatePasswordAndNavigateCommand => new RelayCommand<string>(ValidatePasswordAndNavigate);
-
-        private void ValidatePasswordAndNavigate(string password)
-        {
-            throw new NotImplementedException();
         }
     }
 }

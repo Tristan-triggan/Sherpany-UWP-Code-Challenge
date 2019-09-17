@@ -8,7 +8,7 @@ namespace Sherpany_UWP_Code_Challenge.Interfaces
 {
     public interface IKeyManager
     {
-        string GetEncryptionKey(bool isDemoMode);
+        string GetEncryptionKey(bool isDemoMode = false);
         void SetEncryptionKey(string key);
         bool DeleteEncryptionKey();
         bool IsKeySet();

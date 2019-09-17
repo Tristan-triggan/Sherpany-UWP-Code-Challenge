@@ -18,9 +18,9 @@
     </Page.Resources>
     <Grid>
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Height="200" Width="400" Padding="30,30">
-            <TextBlock VerticalAlignment="Top" Text="Set a six-digit passcode:"></TextBlock>
+            <TextBlock VerticalAlignment="Top" Text="{Binding PassPhrase}" />
             <TextBox MaxLength="6" VerticalAlignment="Top" PlaceholderText="123456" Height="30" Margin="0,30,0,0" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <Button Content="Navigate" VerticalAlignment="Top" Margin="0,70,0,0" HorizontalAlignment="Right" Command="{Binding SetPasswordAndNavigateCommand}"></Button>
+            <Button Content="Navigate" VerticalAlignment="Top" Margin="0,70,0,0" HorizontalAlignment="Right" Command="{Binding TryLoginCommand}"></Button>
         </Grid>
         <Grid x:Name="DragableGrid" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White"
               ManipulationMode="TranslateX, TranslateY, Scale" ManipulationDelta="OnDragableGridManipulationDelta"
