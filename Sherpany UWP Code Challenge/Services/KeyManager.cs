@@ -20,7 +20,7 @@ namespace Sherpany_UWP_Code_Challenge.Services
 
         public string GetEncryptionKey(bool isDemoMode)
         {
-            throw new NotImplementedException();
+            return IsKeySet() ? _localSettings.Values[_resourceName].ToString() : string.Empty;
         }
 
         public void SetEncryptionKey(string key)
@@ -30,12 +30,12 @@ namespace Sherpany_UWP_Code_Challenge.Services
 
         public bool DeleteEncryptionKey()
         {
-            throw new NotImplementedException();
+            return IsKeySet() && _localSettings.Values.Remove(_resourceName);
         }
 
         public bool IsKeySet()
         {
-            throw new NotImplementedException();
+            return _localSettings.Values.ContainsKey(_resourceName);
         }
     }
 }
