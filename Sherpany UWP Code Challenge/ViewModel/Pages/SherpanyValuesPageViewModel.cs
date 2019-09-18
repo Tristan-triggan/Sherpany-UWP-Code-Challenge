@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Sherpany_UWP_Code_Challenge.Interfaces;
 using Sherpany_UWP_Code_Challenge.Model;
+using WinRTXamlToolkit.Tools;
 
 namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
 {
@@ -65,6 +66,7 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
         {
             ValuesRetrievalInProgress = true;
 
+            Values.CollectionChanged -= ValuesChanged;
             Values.Clear();
             var cache = await _cachingService.GetCache();
             if (cache == null)
@@ -82,8 +84,24 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
                     Values.Add(value);
                 }
             }
+            Values.CollectionChanged += ValuesChanged;
 
             ValuesRetrievalInProgress = false;
+        }
+
+        private void ValuesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                var movedValue = e.NewItems[0] as SherpanyValueModel;
+                var startingIndex = Math.Min(movedValue.Order, e.NewStartingIndex);
+                var lastIndex = Math.Max(movedValue.Order, e.NewStartingIndex);
+                for(int i = startingIndex; i <= lastIndex; i++)
+                {
+                    Values[i].Order = i;
+                }
+                _cachingService.CacheData(Values.ToList());
+            }
         }
     }
 }
