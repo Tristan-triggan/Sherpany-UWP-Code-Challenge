@@ -121,12 +121,14 @@
     </Compile>
     <Compile Include="Common\LightInjectServiceLocation.cs" />
     <Compile Include="Converter\NullToVisibilityConverter.cs" />
-    <Compile Include="Interfaces\EncryptionManager.cs" />
+    <Compile Include="Interfaces\ICachingService.cs" />
+    <Compile Include="Interfaces\IEncryptionManager.cs" />
     <Compile Include="Interfaces\IDialogServiceEx.cs" />
     <Compile Include="Interfaces\IDummyApiService.cs" />
     <Compile Include="Interfaces\IKeyManager.cs" />
     <Compile Include="Messages\StartAnimationMessage.cs" />
     <Compile Include="Model\SherpanyValueModel.cs" />
+    <Compile Include="Services\CachingService.cs" />
     <Compile Include="Services\DummyApiService.cs" />
     <Compile Include="Services\KeyManager.cs" />
     <Compile Include="Services\UwpEncryptionManager.cs" />

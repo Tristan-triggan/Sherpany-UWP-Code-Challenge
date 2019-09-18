@@ -15,6 +15,7 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
     public class SherpanyValuesPageViewModel: ViewModelBase
     {
         private readonly IDummyApiService _apiService;
+        private readonly ICachingService<List<SherpanyValueModel>> _cachingService;
 
         public ObservableCollection<SherpanyValueModel> Values { get; } = new ObservableCollection<SherpanyValueModel>();
         private SherpanyValueModel _detailedValue;
@@ -53,9 +54,10 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
         }
 
 
-        public SherpanyValuesPageViewModel(IDummyApiService apiService)
+        public SherpanyValuesPageViewModel(IDummyApiService apiService, ICachingService<List<SherpanyValueModel>> cachingService)
         {
             _apiService = apiService;
+            _cachingService = cachingService;
             GetValuesCommand = new RelayCommand(GetValues, () => !ValuesRetrievalInProgress);
         }
 
@@ -64,9 +66,21 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
             ValuesRetrievalInProgress = true;
 
             Values.Clear();
-            foreach(var value in (await _apiService.GetValueModelsAsync()).OrderBy(e => e.Order))
+            var cache = await _cachingService.GetCache();
+            if (cache == null)
             {
-                Values.Add(value);
+                foreach (var value in (await _apiService.GetValueModelsAsync()).OrderBy(e => e.Order))
+                {
+                    Values.Add(value);
+                }
+                _cachingService.CacheData(Values.ToList());
+            }
+            else
+            {
+                foreach(var value in cache)
+                {
+                    Values.Add(value);
+                }
             }
 
             ValuesRetrievalInProgress = false;

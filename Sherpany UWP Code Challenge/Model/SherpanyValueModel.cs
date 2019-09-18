@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sherpany_UWP_Code_Challenge.Model
 {
+    [Serializable]
     public class SherpanyValueModel
     {
         public string Title { get; set; }

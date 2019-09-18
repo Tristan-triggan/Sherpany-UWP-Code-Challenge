@@ -14,6 +14,7 @@ using Sherpany_UWP_Code_Challenge.Services;
 using Sherpany_UWP_Code_Challenge.View.Pages;
 using Sherpany_UWP_Code_Challenge.View.Dialog;
 using Sherpany_UWP_Code_Challenge.ViewModel.Pages;
+using Sherpany_UWP_Code_Challenge.Model;
 
 namespace Sherpany_UWP_Code_Challenge.ViewModel
 {
@@ -53,13 +54,11 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel
             _container.Register<MainPageViewModel>();
             _container.Register<SherpanyValuesPageViewModel>();
 
-            
-
             //Services
             _container.Register<IDummyApiService, DummyApiService>();
             _container.Register<IKeyManager, KeyManager>();
             _container.Register<IEncryptionManager, UwpEncryptionManager>();
-
+            _container.Register<ICachingService<List<SherpanyValueModel>>, CachingService<List<SherpanyValueModel>>>();
         }
 
         private INavigationService CreateNavigationService()
