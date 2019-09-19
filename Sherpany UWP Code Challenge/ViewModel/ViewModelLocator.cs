@@ -41,7 +41,6 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel
         public MainPageViewModel MainPage => ServiceLocator.Current.GetInstance<MainPageViewModel>();
         public SherpanyValuesPageViewModel ValuesPage => ServiceLocator.Current.GetInstance<SherpanyValuesPageViewModel>();
 
-
         private void RegisterServices()
         {
             //_container.Invalidate();

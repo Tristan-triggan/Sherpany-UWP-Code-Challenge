@@ -28,7 +28,7 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
             set
             {
                 _password = value;
-                ((RelayCommand<string>)TryLoginCommand).RaiseCanExecuteChanged();
+                ((RelayCommand)TryLoginCommand).RaiseCanExecuteChanged();
             }
         }
         public bool IsPasswordSet => _keyManager.IsKeySet();
@@ -39,7 +39,7 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
         {
             _navigationService = navigationService;
             _keyManager = keyManager;
-            TryLoginCommand = new RelayCommand<string>(TryLogin, IsPasswordValid);
+            TryLoginCommand = new RelayCommand(TryLogin, IsPasswordValid);
             _dialogService = dialogService;
         }
 
@@ -54,7 +54,7 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
 
         public ICommand TryLoginCommand { get;  }
 
-        private void TryLogin(string _)
+        public void TryLogin()
         {
             if(IsPasswordSet)
             {
@@ -71,22 +71,22 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
             _navigationService.NavigateTo("SherpanyValuesPageView");
         }
 
-        private void StorePassword(string password)
+        public void StorePassword(string password)
         {
             _keyManager.SetEncryptionKey(EncryptPassword(password));
         }
 
-        private bool VerifyPassword(string password)
+        public bool VerifyPassword(string password)
         {
             return EncryptPassword(password) == _keyManager.GetEncryptionKey();
         }
 
-        private bool IsPasswordValid(string _)
+        public bool IsPasswordValid()
         {
             return Password?.Length == 6 && Password.All(c => char.IsDigit(c));
         }
 
-        private string EncryptPassword(string password)
+        public string EncryptPassword(string password)
         {
             using (var sha256Hash = SHA256.Create())
             { 
