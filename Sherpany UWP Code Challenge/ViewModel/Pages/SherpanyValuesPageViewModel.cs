@@ -66,6 +66,7 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
         public ICommand CreateNewValueCommand { get; }
         public ICommand AddValueCommand { get; }
         public ICommand DeleteValueCommand { get; }
+        public ICommand ResetValuesCommand { get; }
 
         private bool _valuesRetrievalInProgress = false;
         public bool ValuesRetrievalInProgress
@@ -80,6 +81,7 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
                 {
                     _valuesRetrievalInProgress = value;
                     ((RelayCommand)GetValuesCommand).RaiseCanExecuteChanged();
+                    ((RelayCommand)ResetValuesCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -92,6 +94,26 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
             CreateNewValueCommand = new RelayCommand(CreateNewValue, () => Values?.Any() == true);
             AddValueCommand = new RelayCommand(AddNewValue);
             DeleteValueCommand = new RelayCommand(DeleteValue);
+            ResetValuesCommand = new RelayCommand(ResetValues, () => !ValuesRetrievalInProgress);
+        }
+
+        private async void ResetValues()
+        {
+            ValuesRetrievalInProgress = true;
+            Values.CollectionChanged -= ValuesChanged;
+            Values.Clear();
+            if (await _cachingService.CacheExists())
+            {
+                foreach (var value in (await _apiService.GetValueModelsAsync()).OrderBy(e => e.Order))
+                {
+                    Values.Add(value);
+                }
+                _cachingService.CacheData(Values.ToList());
+            }
+            Values.CollectionChanged += ValuesChanged;
+            ((RelayCommand)CreateNewValueCommand).RaiseCanExecuteChanged();
+
+            ValuesRetrievalInProgress = false;
         }
 
         private async void GetValues()
@@ -169,6 +191,7 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
         {
             Values.Remove(DetailedValue);
             DetailedValue = null;
+            _cachingService.CacheData(Values.ToList());
         }
     }
 }

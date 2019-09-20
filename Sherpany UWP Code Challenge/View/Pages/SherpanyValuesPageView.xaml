@@ -24,8 +24,9 @@
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
         <StackPanel Grid.RowSpan="3" VerticalAlignment="Center" >
-            <Button Content="Sync" Command="{Binding GetValuesCommand}" Margin="15" />
-            <Button Content="Add" Command="{Binding CreateNewValueCommand}" Margin="15" />
+            <Button Content="Sync" Command="{Binding GetValuesCommand}" Margin="15" HorizontalAlignment="Center" />
+            <Button Content="Add" Command="{Binding CreateNewValueCommand}" Margin="15" HorizontalAlignment="Center" />
+            <Button Content="Reset values" Command="{Binding ResetValuesCommand}" Margin="15" HorizontalAlignment="Center" />
         </StackPanel>
         <Rectangle Grid.RowSpan="3" Grid.Column="1" Fill="DeepSkyBlue" />
         <ListView Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" ItemsSource="{Binding Values}" SelectionMode="Single" SelectedItem="{Binding DetailedValue, Mode=TwoWay}"

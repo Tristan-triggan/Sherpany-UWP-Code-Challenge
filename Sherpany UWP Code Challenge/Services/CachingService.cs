@@ -26,6 +26,11 @@ namespace Sherpany_UWP_Code_Challenge.Services
             _folder = ApplicationData.Current.LocalFolder;
         }
 
+        public async Task<bool> CacheExists()
+        {
+            return await _folder.TryGetItemAsync(_fileName) != null;
+        }
+
         public async Task<T> GetCache()
         {
             T data = default;

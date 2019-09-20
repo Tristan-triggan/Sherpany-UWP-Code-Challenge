@@ -8,6 +8,7 @@ namespace Sherpany_UWP_Code_Challenge.Interfaces
 {
     public interface ICachingService<T>
     {
+        Task<bool> CacheExists();
         Task<T> GetCache();
         void CacheData(T values);
     }
