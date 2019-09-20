@@ -46,5 +46,10 @@ namespace Sherpany_UWP_Code_Challenge
         {
             Button.IsEnabled = true;
         }
+
+        private void TextBoxBeforeTextChanging(TextBox sender, TextBoxBeforeTextChangingEventArgs args)
+        {
+            args.Cancel = args.NewText.Any(c => !char.IsDigit(c));
+        }
     }
 }
