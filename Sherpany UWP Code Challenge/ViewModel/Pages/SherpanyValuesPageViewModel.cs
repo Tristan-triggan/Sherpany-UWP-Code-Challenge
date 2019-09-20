@@ -19,8 +19,8 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
         private readonly ICachingService<List<SherpanyValueModel>> _cachingService;
 
         public ObservableCollection<SherpanyValueModel> Values { get; } = new ObservableCollection<SherpanyValueModel>();
-        private SherpanyValueModel _detailedValue;
 
+        private SherpanyValueModel _detailedValue;
         public SherpanyValueModel DetailedValue
         {
             get { return _detailedValue; }
@@ -29,15 +29,45 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
                 if (_detailedValue != value)
                 {
                     _detailedValue = value;
+                    if(value != null)
+                    {
+                        NewValue = null;
+                    }
                     RaisePropertyChanged();
                 }
+            }
+        }
+        private SherpanyValueModel _newValue;
+        public SherpanyValueModel NewValue
+        {
+            get { return _newValue; }
+            set
+            {
+                if (_newValue != value)
+                {
+                    _newValue = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+        private string _errorMessage;
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set
+            {
+                _errorMessage = value;
+                RaisePropertyChanged();
             }
         }
 
 
         public ICommand GetValuesCommand { get; }
-        private bool _valuesRetrievalInProgress = false;
+        public ICommand CreateNewValueCommand { get; }
+        public ICommand AddValueCommand { get; }
+        public ICommand DeleteValueCommand { get; }
 
+        private bool _valuesRetrievalInProgress = false;
         public bool ValuesRetrievalInProgress
         {
             get
@@ -54,12 +84,14 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
             }
         }
 
-
         public SherpanyValuesPageViewModel(IDummyApiService apiService, ICachingService<List<SherpanyValueModel>> cachingService)
         {
             _apiService = apiService;
             _cachingService = cachingService;
             GetValuesCommand = new RelayCommand(GetValues, () => !ValuesRetrievalInProgress);
+            CreateNewValueCommand = new RelayCommand(CreateNewValue, () => Values?.Any() == true);
+            AddValueCommand = new RelayCommand(AddNewValue);
+            DeleteValueCommand = new RelayCommand(DeleteValue);
         }
 
         private async void GetValues()
@@ -85,6 +117,7 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
                 }
             }
             Values.CollectionChanged += ValuesChanged;
+            ((RelayCommand)CreateNewValueCommand).RaiseCanExecuteChanged();
 
             ValuesRetrievalInProgress = false;
         }
@@ -102,6 +135,40 @@ namespace Sherpany_UWP_Code_Challenge.ViewModel.Pages
                 }
                 _cachingService.CacheData(Values.ToList());
             }
+        }
+
+        private void CreateNewValue()
+        {
+            DetailedValue = null;
+            NewValue = new SherpanyValueModel { Order = Values.Max(v => v.Order) };
+        }
+
+        private void AddNewValue()
+        {
+            if (IsNewValueValid())
+            {
+                ErrorMessage = string.Empty;
+                Values.Add(NewValue);
+                _cachingService.CacheData(Values.ToList());
+                NewValue = null;
+                DetailedValue = Values.Last();
+                ((RelayCommand)CreateNewValueCommand).RaiseCanExecuteChanged();
+            }
+            else
+            {
+                ErrorMessage = "New value should have at least a title and a description!";
+            }
+        }
+
+        private bool IsNewValueValid()
+        {
+            return !string.IsNullOrEmpty(NewValue?.Title) && !string.IsNullOrEmpty(NewValue?.Description);
+        }
+
+        private void DeleteValue()
+        {
+            Values.Remove(DetailedValue);
+            DetailedValue = null;
         }
     }
 }

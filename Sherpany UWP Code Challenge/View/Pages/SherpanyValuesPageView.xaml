@@ -19,28 +19,42 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="2.5*" />
             <RowDefinition Height="5" />
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
-        <Button Grid.RowSpan="3" Content="Sync" Command="{Binding GetValuesCommand}" Margin="15" />
-        <Rectangle Grid.RowSpan="3" Grid.Column="1" Fill="DeepSkyBlue" />
-        <StackPanel Grid.Column="2" Grid.Row="0" VerticalAlignment="Center">
-            <ListView ItemsSource="{Binding Values}" SelectionMode="Single" SelectedItem="{Binding DetailedValue, Mode=TwoWay}"
-                      CanDragItems="True" CanReorderItems="True" AllowDrop="True">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Title}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+        <StackPanel Grid.RowSpan="3" VerticalAlignment="Center" >
+            <Button Content="Sync" Command="{Binding GetValuesCommand}" Margin="15" />
+            <Button Content="Add" Command="{Binding CreateNewValueCommand}" Margin="15" />
         </StackPanel>
+        <Rectangle Grid.RowSpan="3" Grid.Column="1" Fill="DeepSkyBlue" />
+        <ListView Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" ItemsSource="{Binding Values}" SelectionMode="Single" SelectedItem="{Binding DetailedValue, Mode=TwoWay}"
+                  CanDragItems="True" CanReorderItems="True" AllowDrop="True" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Grid.Column="0" Text="{Binding Title}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         <Rectangle Grid.Row="1" Grid.Column="2" Fill="DeepSkyBlue" Height="5" Visibility="{Binding DetailedValue, Converter={StaticResource NullToVisibilityConverter}}"/>
-        <StackPanel Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Visibility="{Binding DetailedValue, Converter={StaticResource NullToVisibilityConverter}}">
+        <Rectangle Grid.Row="1" Grid.Column="2" Fill="DeepSkyBlue" Height="5" Visibility="{Binding NewValue, Converter={StaticResource NullToVisibilityConverter}}"/>
+        <StackPanel Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Visibility="{Binding DetailedValue, Converter={StaticResource NullToVisibilityConverter}}" Margin="15">
             <TextBlock Text="{Binding DetailedValue.Title}" FontSize="32" />
             <TextBlock Text="{Binding DetailedValue.Description}" TextWrapping="WrapWholeWords" />
             <TextBlock Text="Value claim:" Margin="10" />
             <TextBlock Text="{Binding DetailedValue.Claim}" FontStyle="Italic" />
+            <Button Grid.Column="1" Content="Delete this value" Command="{Binding DeleteValueCommand}" />
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="2" VerticalAlignment="Center" Visibility="{Binding NewValue, Converter={StaticResource NullToVisibilityConverter}}" Margin="15">
+            <TextBlock Text="Add a value you think might be worth sharing:" FontSize="32" />
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontSize="8" />
+            <TextBlock Text="Value title" />
+            <TextBox Text="{Binding NewValue.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="32" />
+            <TextBlock Text="Value description" />
+            <TextBox Text="{Binding NewValue.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="100" />
+            <TextBlock Text="Value claim (optional)" Margin="10" />
+            <TextBox Text="{Binding NewValue.Claim, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontStyle="Italic" />
+            <Button Content="Validate" Command="{Binding AddValueCommand}" Margin="15" />
         </StackPanel>
     </Grid>
 </Page>
